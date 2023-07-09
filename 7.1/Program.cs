@@ -72,9 +72,18 @@ namespace _7._1
                         break;
                     case '4':
                         Console.CursorLeft = 0;
+                        string[] temp;
                         foreach (Employee employee in repository.GetAllEmployees())
                         {
-                            Console.WriteLine(employee.EmployeeToString());
+                            temp = employee.EmployeeToString().Split('#');
+                            Console.WriteLine("ID: {0} Дата регистрации: {1} ФИО: {2} Возраст: {3} Рост: {4} Дата рождения: {5} Город:{6}",
+                                temp[0],
+                                temp[1],
+                                temp[2],
+                                temp[3],
+                                temp[4],
+                                temp[5],
+                                temp[6]);
                         }
                         break;
                     default:
