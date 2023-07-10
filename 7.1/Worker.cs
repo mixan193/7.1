@@ -6,30 +6,19 @@ using System.Threading.Tasks;
 
 namespace _7._1
 {
-    internal class Employee
+    struct Worker
     {
-        private int id;
-        public int Id 
-        {
-            get
-            { 
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private DateTime dateTime = DateTime.Now;
+        public int id;
+        private DateTime dateTime;
         private string fullName;
         private int age;
         private int height;
         private DateTime dateOfBirth;
         private string placeOfBirth;
-        public Employee(int id, DateTime dateTime, string fullName, int height, DateTime dateOfBirth, string placeOfBirth)
+        public Worker(int id, string fullName, int height, DateTime dateOfBirth, string placeOfBirth)
         {
             this.id = id;
-            this.dateTime = dateTime;
+            this.dateTime = DateTime.Now;
             this.fullName = fullName;
             age = (dateTime - dateOfBirth).Days / 365;
             this.height = height;
@@ -37,7 +26,12 @@ namespace _7._1
             this.placeOfBirth = placeOfBirth;
         }
 
-        public string EmployeeToString()
+        public void SetId(int id)
+        {
+            this.id = id;
+        }
+
+        public string WorkerToString()
         {
             string result = string.Empty;
             result += id.ToString() + "#";

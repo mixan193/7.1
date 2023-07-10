@@ -10,7 +10,7 @@ namespace _7._1
     internal class Repository
     {
         private string pathToDBFile;
-        public int EmployeesCount
+        public int WorkersCount
         {
             get
             {
@@ -27,10 +27,9 @@ namespace _7._1
             }
         }
 
-        public int AddEmployeeToDB()
+        public int AddWorkerToDB()
         {
             int id = GetLastID() + 1;
-            DateTime dateTime = DateTime.Now;
             Console.WriteLine("Введите ФИО ");
             string fullName = Program.EnterString();
             Console.WriteLine("Введите рост ");
@@ -39,17 +38,17 @@ namespace _7._1
             DateTime dateOfBirth = Program.EnterDate();
             Console.WriteLine("Введите место рождения ");
             string placeOfBirth = Program.EnterString();
-            Employee employee = new Employee(id, dateTime, fullName, height, dateOfBirth, placeOfBirth);
-            AddEmployeeToDB(employee.EmployeeToString());
+            Worker worker = new Worker(id, fullName, height, dateOfBirth, placeOfBirth);
+            AddWorkerToDB(worker.WorkerToString());
             return id;
         }
 
-        public bool AddEmployeeToDB(string employer)
+        public bool AddWorkerToDB(string worker)
         {
             try
             {
                 StreamWriter streamWriter = new StreamWriter(pathToDBFile, true);
-                streamWriter.WriteLine(employer);
+                streamWriter.WriteLine(worker);
                 streamWriter.Close();
                 return true;
             }
@@ -77,13 +76,13 @@ namespace _7._1
 
         }
 
-        public Employee GetEmployeeById(int id)
+        public Worker? GetWorkerById(int id)
         {
-            foreach(Employee employee in GetAllEmployees())
+            foreach(Worker worker in GetAllWorkers())
             {
-                if(employee.Id == id)
+                if(worker.id == id)
                 {
-                    return employee;
+                    return worker;
                 }
             }
             return null;
@@ -93,27 +92,27 @@ namespace _7._1
             return File.ReadLines(pathToDBFile).Count();
         }
 
-        public bool DeleteEmployeeFromDB(int id)
+        public bool DeleteWorkerFromDB(int id)
         {
             bool result = false;
-            List<Employee> employees = GetAllEmployees().ToList();
+            List<Worker> workers = GetAllWorkers().ToList();
             DeleteDBFile(pathToDBFile);
-            foreach (Employee employee in employees)
+            foreach (Worker worker in workers)
             {
-                if(employee.Id == id)
+                if(worker.id == id)
                 {
-                    employees.Remove(employee);
+                    workers.Remove(worker);
                     result = true;
                     break;
                 }
             }
-            for(int i = 0; i < employees.Count; i++)
+            for(int i = 0; i < workers.Count; i++)
             {
-                employees[i].Id = i + 1;
+                workers[i].SetId(i + 1);
             }
-            foreach (Employee employee in employees)
+            foreach (Worker worker in workers)
             {
-                AddEmployeeToDB(employee.EmployeeToString());
+                AddWorkerToDB(worker.WorkerToString());
             }
             if (!File.Exists(pathToDBFile))
             {
@@ -124,11 +123,11 @@ namespace _7._1
             return result;
         }
 
-        public Employee[] GetAllEmployees()
+        public Worker[] GetAllWorkers()
         {
             StreamReader streamReader = new StreamReader(pathToDBFile);
-            string[] employeesInString = new string[GetLastID()];
-            Employee[] employees = new Employee[GetLastID()];
+            string[] workersInString = new string[GetLastID()];
+            Worker[] workers = new Worker[GetLastID()];
             int id;
             DateTime dateTime;
             string fullName;
@@ -136,20 +135,20 @@ namespace _7._1
             DateTime dateOfBirth;
             string placeOfBirth;
             string[] temp;
-            for(int i = 0; i < employeesInString.Length; i++)
+            for(int i = 0; i < workersInString.Length; i++)
             {
-                employeesInString[i] = streamReader.ReadLine();
-                temp = employeesInString[i].Split('#');
+                workersInString[i] = streamReader.ReadLine();
+                temp = workersInString[i].Split('#');
                 id = int.Parse(temp[0]);
                 dateTime = DateTime.Parse(temp[1]);
                 fullName = temp[2];
                 height = int.Parse(temp[4]);
                 dateOfBirth = DateTime.Parse(temp[5]);
                 placeOfBirth = temp[6];
-                employees[i] = new Employee(id, dateTime, fullName, height, dateOfBirth, placeOfBirth);
+                workers[i] = new Worker(id, fullName, height, dateOfBirth, placeOfBirth);
             }
             streamReader.Close();
-            return employees;
+            return workers;
         }
     }
 }

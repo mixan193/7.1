@@ -12,12 +12,6 @@ namespace _7._1
         {
             Console.InputEncoding = System.Text.Encoding.GetEncoding("utf-16");
             Repository repository = new Repository("DB.txt");
-            int id;
-            DateTime dateTime;
-            string fullName;
-            int height;
-            DateTime dateOfBirth;
-            string placeOfBirth;
             while (true)
             {
                 Console.Clear();
@@ -29,14 +23,14 @@ namespace _7._1
                 {
                     case '1':
                         Console.CursorLeft = 0;
-                        repository.AddEmployeeToDB();
+                        repository.AddWorkerToDB();
                         break;
                     case '2':
                         Console.CursorLeft = 0;
                         Console.WriteLine("Введите ID");
                         try
                         {
-                            if (repository.DeleteEmployeeFromDB(int.Parse(Console.ReadLine())))
+                            if (repository.DeleteWorkerFromDB(int.Parse(Console.ReadLine())))
                             {
                                 Console.WriteLine("Пользователь удалён");
                             }
@@ -55,10 +49,10 @@ namespace _7._1
                         Console.WriteLine("Введите ID");
                         try
                         {
-                            Employee employee;
-                            if ((employee = repository.GetEmployeeById(int.Parse(Console.ReadLine()))) != null)
+                            Worker? worker;
+                            if ((worker = repository.GetWorkerById(int.Parse(Console.ReadLine()))) != null)
                             {
-                                Console.WriteLine(employee.EmployeeToString());
+                                PrintWorker(worker);
                             }
                             else
                             {
@@ -72,18 +66,9 @@ namespace _7._1
                         break;
                     case '4':
                         Console.CursorLeft = 0;
-                        string[] temp;
-                        foreach (Employee employee in repository.GetAllEmployees())
+                        foreach (Worker worker in repository.GetAllWorkers())
                         {
-                            temp = employee.EmployeeToString().Split('#');
-                            Console.WriteLine("ID: {0} Дата регистрации: {1} ФИО: {2} Возраст: {3} Рост: {4} Дата рождения: {5} Город:{6}",
-                                temp[0],
-                                temp[1],
-                                temp[2],
-                                temp[3],
-                                temp[4],
-                                temp[5],
-                                temp[6]);
+                            PrintWorker(worker);
                         }
                         break;
                     default:
@@ -93,7 +78,18 @@ namespace _7._1
                 Console.ReadKey();
             }
         }
-
+        public static void PrintWorker(Worker? worker)
+        {
+            string[] temp = worker?.WorkerToString().Split('#');
+            Console.WriteLine("ID: {0} Дата регистрации: {1} ФИО: {2} Возраст: {3} Рост: {4} Дата рождения: {5} Город:{6}",
+                temp[0],
+                temp[1],
+                temp[2],
+                temp[3],
+                temp[4],
+                temp[5],
+                temp[6]);
+        }
         public static string EnterString()
         {
             string result;
